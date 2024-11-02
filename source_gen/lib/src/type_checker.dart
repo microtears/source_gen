@@ -2,8 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'dart:mirrors' hide SourceLocation;
-
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
@@ -231,25 +229,10 @@ class _LibraryTypeChecker extends TypeChecker {
 
 // Checks a runtime type against a static type.
 class _MirrorTypeChecker extends TypeChecker {
-  static Uri _uriOf(ClassMirror mirror) =>
-      normalizeUrl((mirror.owner as LibraryMirror).uri)
-          .replace(fragment: MirrorSystem.getName(mirror.simpleName));
-
-  // Precomputed type checker for types that already have been used.
-  static final _cache = Expando<TypeChecker>();
-
-  final Type _type;
-
-  const _MirrorTypeChecker(this._type) : super._();
-
-  TypeChecker get _computed =>
-      _cache[this] ??= TypeChecker.fromUrl(_uriOf(reflectClass(_type)));
+  const _MirrorTypeChecker(Type _) : super._();
 
   @override
-  bool isExactly(Element element) => _computed.isExactly(element);
-
-  @override
-  String toString() => _computed.toString();
+  bool isExactly(Element element) => throw UnsupportedError('Not supported');
 }
 
 // Checks a runtime type against an Uri and Symbol.
